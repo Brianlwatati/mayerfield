@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { MENU_ITEMS, CATEGORIES } from "../data/coffeeData";
-import MenuItemCard from "./menu/MenuItemCard";
-import MenuSearchFilter from "./menu/MenuSearchFilter";
+import { MENU_ITEMS, CATEGORIES } from "../../data/coffeeData";
+import MenuItemCard from "./MenuItemCard";
+import MenuSearchFilter from "./MenuSearchFilter";
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
