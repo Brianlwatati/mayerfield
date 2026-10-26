@@ -1,19 +1,24 @@
-import Contact from "./components/sections/Contact";
-import Menu from "./components/sections/menusection/Menu";
-import Reviews from "./components/sections/Reviews";
-import Footer from "./components/ui/Footer";
-import Header from "./components/ui/Header";
+import { Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import MainLayout from "./components/sections/layouts/MainLayout";
+import AuthLayout from "./components/sections/layouts/AuthLayout";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <Header />
-      <Menu />
-      <Reviews />
-      <Contact />
-      <Footer />
-    </div>
+    <Routes>
+      {/* Group 1: Pages using the Main Layout (Header + Footer) */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        {/* You can add additional pages here like /menu, /about, etc. */}
+      </Route>
+
+      {/* Group 2: Pages using the Auth Layout (Clean centered card) */}
+      <Route element={<AuthLayout />}>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;
