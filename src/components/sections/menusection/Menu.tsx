@@ -47,7 +47,7 @@ export default function Menu() {
   });
 
   return (
-    <section id="menu" className="py-16 bg-amber-50/30 min-h-[600px]">
+    <section id="menu" className="py-16 bg-amber-50/30 min-h-150">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title Header */}
         <div className="text-center max-w-2xl mx-auto mb-8">
