@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { registerUser } from "../services/api";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -17,25 +18,7 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to create account. Please try again.",
-        );
-      }
-
+      await registerUser(formData);
       // Success: Redirect user to sign-in page
       navigate("/signin");
     } catch (err: any) {
