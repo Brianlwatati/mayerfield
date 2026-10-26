@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { MenuItem } from "../../data/coffeeData";
+import type { MenuItem } from "../../../types/menutype";
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -22,7 +22,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
-        {item.isPopular && (
+        {item.is_popular && (
           <span className="absolute top-3 right-3 bg-amber-800 text-amber-50 text-xs px-2.5 py-1 rounded-full font-medium shadow">
             Popular ★
           </span>
@@ -40,7 +40,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               {item.name}
             </h3>
             <span className="font-bold text-amber-900 text-lg">
-              ${item.price.toFixed(2)}
+              ${Number(item.price).toFixed(2)}
             </span>
           </div>
           <p className="text-gray-600 text-xs leading-relaxed mt-2 line-clamp-2">
@@ -79,7 +79,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           >
             <span>Add to Cart</span>
             <span className="text-amber-300 font-bold">
-              • ${(item.price * quantity).toFixed(2)}
+              • ${(Number(item.price) * quantity).toFixed(2)}
             </span>
           </button>
         </div>

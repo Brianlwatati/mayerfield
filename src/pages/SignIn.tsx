@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { loginUser } from "../services/api";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -13,25 +14,15 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await loginUser(formData);
 
-      const data = await response.json();
+      // Save token and user details to localStorage
+      localStorage.setItem("auth_token", data.token);
+      localStorage.setItem("user_info", JSON.stringify(data.user));
 
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to sign in. Please check your credentials.",
-        );
-      }
-
-      // Success: Save token if returned and redirect home
-      // localStorage.setItem('token', data.token);
+      // Trigger a storage event or redirect (forcing state update across components)
       navigate("/");
+      window.location.reload(); // Simple way to refresh header auth state for now
     } catch (err: any) {
       setError(
         err.message || "An error occurred. Is the backend server running?",
