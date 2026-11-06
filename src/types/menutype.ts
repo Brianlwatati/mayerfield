@@ -1,9 +1,10 @@
 // src/data/coffeeData.ts (or your data file)
-export type Categories =
-  | "Hot Coffee"
-  | "Cold Drinks"
-  | "Bakery"
-  | "Tea & Others";
+export interface Categories {
+  id: string;
+  name: string;
+  description: string;
+  created_at: string;
+}
 
 export const CATEGORIES = [
   "All",
@@ -18,7 +19,8 @@ export interface MenuItem {
   name: string;
   description: string;
   price: number;
-  category: Categories;
+  category_name: string; // Changed from 'category' to 'category_name'
+  category_id: string;
   image: string;
   is_popular?: boolean;
 }

@@ -1,5 +1,8 @@
+// src/components/sections/menusection/MenuItemCard.tsx
+
 import { useState } from "react";
 import type { MenuItem } from "../../../types/menutype";
+import { useCart } from "../../../context/CartContext";
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -7,10 +10,22 @@ interface MenuItemCardProps {
 
 export default function MenuItemCard({ item }: MenuItemCardProps) {
   const [quantity, setQuantity] = useState(1);
+  const [addedFeedback, setAddedFeedback] = useState(false);
+  const { addToCart } = useCart();
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleAddToCart = () => {
+    addToCart(item, quantity);
+    setAddedFeedback(true);
+    // Reset back to original state after 1.5 seconds
+    setTimeout(() => {
+      setAddedFeedback(false);
+      setQuantity(1);
+    }, 1500);
+  };
 
   return (
     <div className="bg-white rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col overflow-hidden group">
@@ -28,7 +43,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           </span>
         )}
         <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-md font-medium">
-          {item.category}
+          {item.category_name}
         </span>
       </div>
 
@@ -54,7 +69,8 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           <div className="flex items-center border border-amber-200 rounded-lg bg-amber-50/50 p-1">
             <button
               onClick={handleDecrement}
-              className="w-7 h-7 flex items-center justify-center rounded text-amber-900 hover:bg-amber-200/60 font-bold transition-colors"
+              disabled={addedFeedback}
+              className="w-7 h-7 flex items-center justify-center rounded text-amber-900 hover:bg-amber-200/60 font-bold transition-colors disabled:opacity-50"
               aria-label="Decrease quantity"
             >
               -
@@ -64,7 +80,8 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             </span>
             <button
               onClick={handleIncrement}
-              className="w-7 h-7 flex items-center justify-center rounded text-amber-900 hover:bg-amber-200/60 font-bold transition-colors"
+              disabled={addedFeedback}
+              className="w-7 h-7 flex items-center justify-center rounded text-amber-900 hover:bg-amber-200/60 font-bold transition-colors disabled:opacity-50"
               aria-label="Increase quantity"
             >
               +
@@ -74,13 +91,20 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           {/* Add to Cart CTA */}
           <button
             type="button"
-            onClick={() => alert(`Added ${quantity} x ${item.name} to cart!`)}
-            className="flex-1 bg-amber-900 hover:bg-amber-950 text-white text-xs font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-1 shadow-sm"
+            onClick={handleAddToCart}
+            disabled={addedFeedback}
+            className={`flex-1 text-xs font-medium py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-1 shadow-sm cursor-pointer ${
+              addedFeedback
+                ? "bg-green-700 text-white"
+                : "bg-amber-900 hover:bg-amber-950 text-white"
+            }`}
           >
-            <span>Add to Cart</span>
-            <span className="text-amber-300 font-bold">
-              • ${(Number(item.price) * quantity).toFixed(2)}
-            </span>
+            <span>{addedFeedback ? "Added! ✓" : "Add to Cart"}</span>
+            {!addedFeedback && (
+              <span className="text-amber-300 font-bold">
+                • ${(Number(item.price) * quantity).toFixed(2)}
+              </span>
+            )}
           </button>
         </div>
       </div>

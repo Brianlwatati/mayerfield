@@ -1,11 +1,13 @@
+// src/components/ui/Header.tsx
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useCart } from "../../context/CartContext";
 
 const NAV_LINKS = [
-  { name: "Menu", href: "#menu" },
-  { name: "Our Story", href: "#about" },
-  { name: "Reviews", href: "#reviews" },
-  { name: "Contact", href: "#contact" },
+  { name: "Menu", href: "/#menu" },
+  { name: "Reviews", href: "/#reviews" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Header() {
@@ -13,6 +15,8 @@ export default function Header() {
   const [user, setUser] = useState<{ name: string; email: string } | null>(
     null,
   );
+  const { totalItems } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Load user profile from localStorage on mount
@@ -33,10 +37,10 @@ export default function Header() {
     window.location.href = "/";
   };
 
-  // Helper to extract short form (e.g., First Name or Initials) for mobile
+  // Helper to extract short form (e.g., First Name) for mobile
   const getShortName = (fullName: string) => {
     const parts = fullName.trim().split(" ");
-    return parts[0]; // Returns first name
+    return parts[0];
   };
 
   return (
@@ -62,14 +66,23 @@ export default function Header() {
                 {link.name}
               </a>
             ))}
+            {user && (
+              <Link
+                to="/orders"
+                className="text-gray-600 hover:text-amber-800 font-medium transition-colors text-sm"
+              >
+                My Orders
+              </Link>
+            )}
           </nav>
 
           {/* Action Buttons & User Profile */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Cart Button */}
             <button
               type="button"
-              className="relative p-2 text-gray-700 hover:text-amber-800 transition-colors"
+              onClick={() => navigate("/cart")}
+              className="relative p-2 text-gray-700 hover:text-amber-800 transition-colors cursor-pointer"
               aria-label="Shopping Cart"
             >
               <svg
@@ -85,9 +98,11 @@ export default function Header() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="absolute top-0 right-0 bg-amber-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                2
-              </span>
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 bg-amber-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+                  {totalItems}
+                </span>
+              )}
             </button>
 
             {/* Conditional User Display */}
@@ -100,7 +115,7 @@ export default function Header() {
                   </span>
                 </div>
 
-                {/* Mobile View: Short Name / First Name */}
+                {/* Mobile View: Short Name */}
                 <div className="md:hidden flex items-center bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
                   <span className="text-xs font-semibold text-amber-950">
                     {getShortName(user.name)}
@@ -109,7 +124,7 @@ export default function Header() {
 
                 <button
                   onClick={handleLogout}
-                  className="text-xs text-red-600 hover:underline font-medium"
+                  className="text-xs text-red-600 hover:underline font-medium cursor-pointer"
                 >
                   Logout
                 </button>
@@ -122,14 +137,6 @@ export default function Header() {
                 Sign In
               </Link>
             )}
-
-            {/* Order Online CTA */}
-            <a
-              href="#menu"
-              className="hidden sm:inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-amber-800 hover:bg-amber-900 transition-colors"
-            >
-              Order Online
-            </a>
 
             {/* Mobile Menu Toggle */}
             <button
@@ -187,6 +194,16 @@ export default function Header() {
               </a>
             ))}
 
+            {user && (
+              <Link
+                to="/orders"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-700 hover:text-amber-800 hover:bg-amber-50 px-3 py-2 rounded-md font-medium text-sm transition-colors"
+              >
+                My Orders
+              </Link>
+            )}
+
             {!user && (
               <Link
                 to="/signin"
@@ -196,14 +213,6 @@ export default function Header() {
                 Sign In
               </Link>
             )}
-
-            <a
-              href="#menu"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="sm:hidden block text-center mt-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-amber-800 hover:bg-amber-900 transition-colors"
-            >
-              Order Online
-            </a>
           </nav>
         </div>
       )}

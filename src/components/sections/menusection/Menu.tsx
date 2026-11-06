@@ -1,8 +1,10 @@
+// src/components/sections/menusection/Menu.tsx
+
 import { useEffect, useState } from "react";
 import MenuItemCard from "./MenuItemCard";
 import MenuSearchFilter from "./MenuSearchFilter";
 import { fetchMenuItems } from "../../../services/api";
-import type { MenuItem } from "../../../types/menutype";
+import type { Categories, MenuItem } from "../../../types/menutype";
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -10,7 +12,7 @@ export default function Menu() {
 
   // State for data returned from the backend
   const [items, setItems] = useState<MenuItem[]>([]);
-  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [categories, setCategories] = useState<Categories[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export default function Menu() {
   // Filter items based on category and search query
   const filteredItems = items.filter((item) => {
     const matchesCategory =
-      selectedCategory === "All" || item.category === selectedCategory;
+      selectedCategory === "All" || item.category_name === selectedCategory;
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase());

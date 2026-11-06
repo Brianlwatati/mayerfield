@@ -1,5 +1,7 @@
+import type { Categories } from "../../../types/menutype";
+
 interface MenuSearchFilterProps {
-  categories: readonly string[];
+  categories: Categories[];
   selectedCategory: string;
   onSelectCategory: (category: string) => void;
   searchQuery: string;
@@ -39,19 +41,29 @@ export default function MenuSearchFilter({
 
       {/* Category Pills */}
       <div className="flex items-center justify-center flex-wrap gap-2 sm:gap-3">
+        <button
+          onClick={() => onSelectCategory("All")}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+            selectedCategory === "All"
+              ? "bg-amber-900 text-white shadow-md scale-105"
+              : "bg-amber-100/60 text-amber-900 hover:bg-amber-200/80"
+          }`}
+        >
+          All
+        </button>
         {categories.map((category) => {
-          const isActive = selectedCategory === category;
+          const isActive = selectedCategory === category.name;
           return (
             <button
-              key={category}
-              onClick={() => onSelectCategory(category)}
+              key={category.id}
+              onClick={() => onSelectCategory(category.name)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 isActive
                   ? "bg-amber-900 text-white shadow-md scale-105"
                   : "bg-amber-100/60 text-amber-900 hover:bg-amber-200/80"
               }`}
             >
-              {category}
+              {category.name}
             </button>
           );
         })}

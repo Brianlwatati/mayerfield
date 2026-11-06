@@ -11,8 +11,8 @@ import CheckoutCancel from "./pages/paypages/CheckoutCancel";
 import CheckoutSuccess from "./pages/paypages/CheckoutSuccess";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
-import Cart from "./pages/paypages/Cart";
 import Menu from "./pages/Menu";
+import Cart from "./pages/paypages/Cart";
 
 export default function App() {
   return (
