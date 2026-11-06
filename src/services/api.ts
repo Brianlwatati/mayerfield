@@ -63,6 +63,20 @@ export async function fetchMenuItems() {
   return data;
 }
 
+// --- ORDER SERVICES ---
+export async function fetchUserOrders() {
+  const response = await fetch(`${API_BASE_URL}/orders`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch orders history");
+  }
+  return data; // Expects { success: true, data: [...] } or array of orders
+}
+
 // --- ORDER / CHECKOUT SERVICES ---
 export async function createCheckoutSession(
   items: Array<{
