@@ -32,7 +32,7 @@ export default function CafeHero({
   return (
     <section
       aria-label={eyebrow}
-      className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-white"
+      className="relative overflow-hidden bg-linear-to-br from-amber-50 via-orange-50 to-white"
     >
       <div
         aria-hidden="true"
@@ -103,7 +103,7 @@ export default function CafeHero({
         <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
           <div
             aria-hidden="true"
-            className="absolute -inset-3 rotate-3 rounded-[2rem] bg-amber-200/70"
+            className="absolute -inset-3 rotate-3 rounded-4xl bg-amber-200/70"
           />
           <div className="relative overflow-hidden rounded-[1.75rem] border-4 border-white bg-amber-100 shadow-2xl shadow-amber-950/15">
             <img
@@ -114,7 +114,7 @@ export default function CafeHero({
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-amber-950/65 via-transparent to-transparent"
+              className="absolute inset-0 bg-linear-to-t from-amber-950/65 via-transparent to-transparent"
             />
             <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white sm:p-7">
               <div>
@@ -134,7 +134,9 @@ export default function CafeHero({
             </div>
           </div>
           <div className="absolute -bottom-5 -left-3 rounded-2xl border border-amber-100 bg-white px-4 py-3 shadow-lg sm:-left-7 sm:px-5">
-            <p className="text-xs font-medium text-stone-500">A good day starts</p>
+            <p className="text-xs font-medium text-stone-500">
+              A good day starts
+            </p>
             <p className="mt-0.5 text-sm font-bold text-amber-950">{note}</p>
           </div>
         </div>
