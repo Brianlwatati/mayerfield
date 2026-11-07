@@ -77,13 +77,15 @@ export async function fetchUserOrders() {
   return data; // Expects { success: true, data: [...] } or array of orders
 }
 
-// --- ORDER / CHECKOUT SERVICES ---
+// --- CHECKOUT & PAYMENT SERVICES ---
+
+// Calls your backend to create a Stripe Checkout Session and returns the checkout URL
 export async function createCheckoutSession(
   items: Array<{
-    item_id: string;
-    name: string;
-    quantity: number;
+    item_id?: string;
+    name?: string;
     price_at_purchase: number;
+    quantity: number;
   }>,
 ) {
   const response = await fetch(`${API_BASE_URL}/orders/checkout`, {
@@ -94,9 +96,28 @@ export async function createCheckoutSession(
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message || "Failed to create checkout session");
+    throw new Error(
+      data.message || data.error || "Failed to initiate checkout",
+    );
   }
-  return data; // Returns { success, message, data: order, url: stripeCheckoutUrl }
+  return data; // Expects { success: true, url: "https://checkout.stripe.com/...", order: ... }
+}
+
+// Calls your backend to verify the Stripe session upon return to the success page
+export async function verifyPaymentSession(sessionId: string) {
+  const response = await fetch(
+    `${API_BASE_URL}/orders/verify-payment?session_id=${sessionId}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+    },
+  );
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || data.error || "Failed to verify payment");
+  }
+  return data; // Expects { success: true, status: "paid", order: ... }
 }
 
 export async function fetchOrderById(orderId: string) {
