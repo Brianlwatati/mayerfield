@@ -5,9 +5,9 @@ import { Link, useNavigate } from "react-router";
 import { useCart } from "../../context/CartContext";
 
 const NAV_LINKS = [
-  { name: "Menu", href: "/#menu" },
-  { name: "Reviews", href: "/#reviews" },
-  { name: "Contact", href: "/#contact" },
+  { name: "Menu", href: "/menu" },
+  { name: "Reviews", href: "/reviews" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -58,13 +58,13 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-gray-600 hover:text-amber-800 font-medium transition-colors text-sm"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             {user && (
               <Link
@@ -184,14 +184,14 @@ export default function Header() {
         <div className="md:hidden bg-white border-b border-amber-100 px-4 pt-2 pb-4 shadow-lg">
           <nav className="flex flex-col space-y-3">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-gray-700 hover:text-amber-800 hover:bg-amber-50 px-3 py-2 rounded-md font-medium text-sm transition-colors"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
 
             {user && (

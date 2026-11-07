@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Menu from "./pages/Menu";
 import Cart from "./pages/paypages/Cart";
+import Reviews from "./pages/Reviews";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/reviews" element={<Reviews />} />
         <Route path="/success" element={<CheckoutSuccess />} />
         <Route path="/cancel" element={<CheckoutCancel />} />
         <Route path="/orders" element={<OrderHistory />} />
